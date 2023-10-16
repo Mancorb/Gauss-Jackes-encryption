@@ -26,6 +26,7 @@ class Number :
     def tranasformEquivalence(self, symbol, multiplier=1):
         """Transform the equivalence equation according to the external symbol and multiplier
         """
+        
         #first replace the value in the list for its real equation
         tempEqui = self.equivalence
 
@@ -37,7 +38,8 @@ class Number :
             #f = 1(3)
             #b = [c,[2(1),1(3)]]
             #[a,[c,e]]
-            if val.
+            if val.equivalence:
+                self.extraction
         pass
     
     def extraction(self):
