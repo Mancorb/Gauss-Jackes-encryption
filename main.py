@@ -18,39 +18,16 @@ b = p * q + r
 
 """
 class Number :
-    def __init__(self,value,mult=0,equal=None):
+    def __init__(self,value,mult=1):
         self.value = value #value of the vurrent number
         self.multiplier = mult #multiplier of the number
-        self.equivalence = equal #equation it represents
-    
-    def tranasformEquivalence(self, symbol, multiplier=1):
-        """Transform the equivalence equation according to the external symbol and multiplier
-        """
-        
-        #first replace the value in the list for its real equation
-        tempEqui = self.equivalence
 
-        for val in tempEqui:
-            #[a,b]
-            #b = [c,e]
-            #e = [g,f]
-            #g = 2(1)
-            #f = 1(3)
-            #b = [c,[2(1),1(3)]]
-            #[a,[c,e]]
-            if val.equivalence:
-                self.extraction
-        pass
-    
-    def extraction(self):
-        #if there is no equivalence equation just return the object
-        if not self.equivalence:
-            return self
-        
-        elif self.equivalence:
-            for val in self.equivalence:
-                val = val.extraction()
+        self.filterNegative()
 
+    def filterNegative(self):
+        if self.value<1:
+            self.value = self.value*-1
+            self.multiplier = self.multiplier*-1
 
 def getP(kn,I,r_counter):
     for  i in range(len(kn)):
@@ -113,11 +90,57 @@ def step1(kn,I, b, r_counter):
 
 
 #[p=33, q=2, r=23, b=89]
-""" def step2(iterations):
-    #extract first values in a simple list for better accesibility 
-    values = iterations[0]
-    iterations[0] =  """
+def step2(iterations):
+    #part one
+    #obtain the first equation
+    p,q,r,b = iterations[0]
+    #dictionary to store the equivalence of a value 
+    b = Number(b)
+    p = Number(p*-1,q)
+    #r=b+(p(q))*-1
+    equivalence = {r:[b,q]}
+
+    equations = iterations [1:-1]
+    #-----------------------------------
+    #Part two
+    for iteration in equations:
+        p,q,r,b = iteration
+        #look for equivalente equations
+        if b in equivalence:
+            b = equivalence[b]
+        else:
+            b = Number(b)
+
+        if p in equivalence:
+            p = equivalence[p]
+
+            for element in p:
+                element.multiplier = (element.multiplier * q)*-1
         
+        else:
+            p = Number(p*-1,q)
+
+        #make new equation of R=B+(P*Q)*-1
+        e = [b]
+        for i in p:
+            e.append(i)
+        
+        #join similar numbers with thier multipliers
+        #eg: 33+ 83(1)+33(2) => 33(3) + 83(1)
+        for i in range(len(e)):
+            for j in range(1,len(e)):
+                if e[i]==e[j]:
+                    #add multipliers
+                    e[i].multiplier = e[i].multiplier + e[j].multiplier
+                    #remove duplicate
+                    e.remove(e[j])
+        
+        #Store new equation to the dictionary
+        equivalence[r] = [b,p]
+
+    #----------------------------------
+    #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
+    
 
 
 #create the matrix
