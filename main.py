@@ -29,6 +29,25 @@ class Number :
             self.value = self.value*-1
             self.multiplier = self.multiplier*-1
 
+def dissolve(e):
+    result = []
+    for i in e:
+        if isinstance(i, list):
+            for j in i:
+                result.append(i)
+        else:
+            result.append(i)
+    
+    return result
+
+def proveR(r,e):
+    res=0
+    for i in e:
+        res += i.value * i.multiplier
+    if r==res:
+        return True
+    return False
+
 def getP(kn,I,r_counter):
     for  i in range(len(kn)):
         if I[r_counter][i] == 1:
@@ -98,7 +117,7 @@ def step2(iterations):
     b = Number(b)
     p = Number(p*-1,q)
     #r=b+(p(q))*-1
-    equivalence = {r:[b,q]}
+    equivalence = {r:[b,p]}
 
     equations = iterations [1:-1]
     #-----------------------------------
@@ -113,7 +132,6 @@ def step2(iterations):
 
         if p in equivalence:
             p = equivalence[p]
-
             for element in p:
                 element.multiplier = (element.multiplier * q)*-1
         
@@ -127,16 +145,23 @@ def step2(iterations):
         
         #join similar numbers with thier multipliers
         #eg: 33+ 83(1)+33(2) => 33(3) + 83(1)
-        for i in range(len(e)):
+        for i in range(len(e)-1):
             for j in range(1,len(e)):
-                if e[i]==e[j]:
+                if e[i].value==e[j].value and e[i]!=e[j]:
                     #add multipliers
                     e[i].multiplier = e[i].multiplier + e[j].multiplier
                     #remove duplicate
                     e.remove(e[j])
         
+        #prove the equation is correct
+        if not proveR(r,e):
+            print(f"Error with ecuation:\n{r}={b.value}*{b.multiplier} + {p.value}*{p.multiplier}\n-------------")
+            return False
         #Store new equation to the dictionary
-        equivalence[r] = [b,p]
+        
+        
+        equivalence[r] = dissolve(e)
+
 
 
     #----------------------------------
@@ -150,5 +175,5 @@ I = [[1,0,0],[0,1,0],[0,0,1]]
 b = 89
 row_counter = 0
 
-
-step1(k,I, b, row_counter)
+it = step1(k,I, b, row_counter)
+step2(it)
