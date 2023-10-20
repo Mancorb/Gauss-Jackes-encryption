@@ -138,6 +138,7 @@ def step2(iterations):
         #Store new equation to the dictionary
         equivalence[r] = [b,p]
 
+
     #----------------------------------
     #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
     
