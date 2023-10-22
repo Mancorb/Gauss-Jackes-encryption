@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 """
 Steps:
 Create a 3x3 matrix for initial tests
@@ -30,6 +31,14 @@ class Number :
             self.multiplier = self.multiplier*-1
 
 def dissolve(e):
+    """Extract a nested listwithin the main list of elements
+
+    Args:
+        e (list): original list of elements to dissolve
+
+    Returns:
+        list: list of elements with no nested lists
+    """
     result = []
     for i in e:
         if isinstance(i, list):
@@ -81,6 +90,16 @@ def getEquation(data):
     r = getR(b,q,p)
     return p,q,r,b
 
+def joinMultiplier(first,second,show=False):
+    if first.value==second.value:
+        #add multipliers
+        first.multiplier = first.multiplier + second.multiplier
+        if show:
+            print("Equation= "+str(first.multiplier)+" + "+str(second.multiplier))
+            print(first.multiplier+second.multiplier)
+    return first
+
+
 def step1(kn,I, b, r_counter):
     """Obtain all the equations from the matrix
 
@@ -126,12 +145,12 @@ def step2(iterations):
         p,q,r,b = iteration
         #look for equivalente equations
         if b in equivalence:
-            b = equivalence[b]
+            b = deepcopy(equivalence[b])
         else:
             b = Number(b)
 
         if p in equivalence:
-            p = equivalence[p]
+            p = deepcopy(equivalence[p])
             for element in p:
                 element.multiplier = (element.multiplier * q)*-1
         
@@ -139,30 +158,50 @@ def step2(iterations):
             p = Number(p*-1,q)
 
         #make new equation of R=B+(P*Q)*-1
-        e = [b]
+        #make sure b is not a list inside e
+        if isinstance(b, list):
+            e = dissolve(b)
+        else:
+            e = [b]
+
+        #Add elements of p to the e list
         for i in p:
             e.append(i)
         
         #join similar numbers with thier multipliers
         #eg: 33+ 83(1)+33(2) => 33(3) + 83(1)
-        for i in range(len(e)-1):
-            for j in range(1,len(e)):
-                if e[i].value==e[j].value and e[i]!=e[j]:
-                    #add multipliers
-                    e[i].multiplier = e[i].multiplier + e[j].multiplier
-                    #remove duplicate
-                    e.remove(e[j])
+        length = len(e)-1
+
+        for i in range(length-1):
+            #look for elements in reverse order to avoid out of bounds error
+            if i == len(e)-1:
+                break
+            elif e[i] == e[-2]:
+                #avoid the cycle if its the last two elements
+                a = e[-1]
+                if e[i].value==a.value:
+                    e[i] =joinMultiplier(e[i],a)                    
+                    e.pop(-1)
+                break
+
+            for j in range(len(e)-1):
+                a = e[length-j]
+
+                if e[i].value==a.value:
+                    e[i] = joinMultiplier(e[i],a)
+                    e.pop(length-j)
+                    
         
         #prove the equation is correct
         if not proveR(r,e):
-            print(f"Error with ecuation:\n{r}={b.value}*{b.multiplier} + {p.value}*{p.multiplier}\n-------------")
+            txt =""
+            for i in e:
+                txt += f"({i.value}*{i.multiplier}) + "
+            print(f"Error with ecuation:\n{r}!={txt}")
+
             return False
         #Store new equation to the dictionary
-        
-        
         equivalence[r] = dissolve(e)
-
-
 
     #----------------------------------
     #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
