@@ -206,8 +206,31 @@ def step2(iterations):
     #----------------------------------
     #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
     
-
-
+def step3(K,I,X,B,r_counter):
+    #Use the x[r_counter] as reference for multiplications but tot eh process first on x[r_counter]
+    #R1 = r1 * X  % B
+    #R2 = R1*-R2[r_counter]+R2
+    #R3 = R1*-R3[r_counter]+R3
+    
+    #FIRST
+    #Change X
+    main_row = X[r_counter]
+    for i in range(main_row):
+        col = main_row[i]
+        main_row[i] = (col * X)% B
+        
+    X[r_counter] = main_row
+    #go for each row
+    length = len(X)
+    for i in range(length):
+        if i != r_counter:
+            for j in range(length):
+                #R2 = R1*-R2[r_counter]+R2
+                r = X[i][r_counter]
+                X[i][j] = main_row[j]*(r*-1) + X[i][j]
+    
+    #Change I
+    
 #create the matrix
 k = [[33,17,60],[50,28,72],[26,86,41]]
 I = [[1,0,0],[0,1,0],[0,0,1]]
@@ -215,4 +238,4 @@ b = 89
 row_counter = 0
 
 it = step1(k,I, b, row_counter)
-step2(it)
+X = step2(it)
