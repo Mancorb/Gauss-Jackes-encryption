@@ -1,25 +1,6 @@
 from methods import *
 from copy import deepcopy
 
-"""
-Steps:
-Create a 3x3 matrix for initial tests
-K matrix = ([33,17,60],[50,28,72],[26,86,41])
-Total number of characters available for the encryption(e,g fi ussing ascii m = 256, if the numebr of charqacters is a list of 89 elements (like in this example) then m = 89)
-M = 89
-Pivot, aka numebr to analize in the matrix (in this case it's the first numebr of the matrix K = 33)
-P = 33
-
-FORMULAS:
-
-b = M
-p = P
-r = b-q
-q = result (int) of b/p
-b = p * q + r
-
-"""
-
 def step1(kn,I, b, r_counter):
     """Obtain all the equations from the matrix
 
@@ -104,6 +85,8 @@ def step3(K,I,X,B,r_counter):
 K = [[33,17,60],[50,28,72],[26,86,41]]
 I = [[1,0,0],[0,1,0],[0,0,1]]
 b = 89
+
+showResults((K,I))
 
 for row_counter in range(len(K)):
     #row_counter = 0

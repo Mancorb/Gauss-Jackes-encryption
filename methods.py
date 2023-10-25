@@ -1,4 +1,3 @@
-import numpy as np
 from copy import deepcopy
 
 class Number :
@@ -173,6 +172,7 @@ def P3_second_process(array,counter,main_row,B,original= None):
     return array
 
 def showResults(arrays):
-    for array in arrays:
-        for row in array:
-            print(row)
+    print("K:\t\tI:")
+    for i in range(len(arrays[0][0])):
+        print(f"{arrays[0][i]}\t{arrays[1][i]}")
+    print("\n--------------------------------\n")
