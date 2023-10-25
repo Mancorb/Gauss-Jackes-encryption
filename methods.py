@@ -155,3 +155,14 @@ def P3_first_process(array,counter,b,x):
         main_row[i] = (col * x)% b
 
     return main_row 
+
+def P3_second_process(array,counter,main_row,B):
+    length = len(array)
+    for i in range(length):
+        if i != counter:
+            r = (array[i][counter])*-1
+
+            for j in range(length):
+                #R2 = R1*-R2[r_counter]+R2
+                array[i][j] = ((main_row[j] * r) + array[i][j]) % B
+    return array
