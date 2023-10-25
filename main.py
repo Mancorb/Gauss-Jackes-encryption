@@ -1,5 +1,5 @@
-import numpy as np
 from methods import *
+from copy import deepcopy
 
 """
 Steps:
@@ -86,27 +86,29 @@ def step3(K,I,X,B,r_counter):
 
     #FIRST
     #Change I
-    I[r_counter] = P3_first_process(I,r_counter,B,X)
+    I_main_row =I[r_counter] = P3_first_process(I,r_counter,B,X)
     
     #Change K
-    main_row = K[r_counter] = P3_first_process(K,r_counter,B,X)
+    K_main_row = K[r_counter] = P3_first_process(K,r_counter,B,X)
 
     #go for each row
-    K = P3_second_process(K,r_counter,main_row,B)    
-    #Change I
-    I = P3_second_process(I,r_counter,main_row,B)
+    temp = deepcopy(K)
 
-    return k,I
+    K = P3_second_process(K,r_counter,K_main_row,B)    
+    #Change I
+    I = P3_second_process(I,r_counter,I_main_row,B,temp)
+
+    return K,I
 
 #create the matrix
-k = [[33,17,60],[50,28,72],[26,86,41]]
+K = [[33,17,60],[50,28,72],[26,86,41]]
 I = [[1,0,0],[0,1,0],[0,0,1]]
 b = 89
-row_counter = 0
 
-it = step1(k,I, b, row_counter)
-X = step2(it,k,I,row_counter)
-K,I = step3(k,I,X,b,row_counter)
+for row_counter in range(len(K)):
+    #row_counter = 0
+    it = step1(K,I, b, row_counter)
+    X = step2(it,K,I,row_counter)
+    K,I = step3(K,I,X,b,row_counter)
 
-
-print("Done")
+showResults((K,I))
