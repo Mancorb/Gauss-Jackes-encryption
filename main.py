@@ -1,5 +1,7 @@
 from methods import *
 from copy import deepcopy
+from time import perf_counter
+import numpy as np
 
 def step1(kn,I, b, r_counter):
     """Obtain all the equations from the matrix
@@ -39,7 +41,7 @@ def step2(iterations,k,I,r_counter):
     #r=b+(p(q))*-1
     equivalence = {r:[b,p]}
 
-    equations = iterations [1:-1]
+    equations = deepcopy(iterations [1:-1])
     #-----------------------------------
     #Part two
     for iteration in equations:
@@ -81,17 +83,53 @@ def step3(K,I,X,B,r_counter):
 
     return K,I
 
-#create the matrix
-K = [[33,17,60],[50,28,72],[26,86,41]]
-I = [[1,0,0],[0,1,0],[0,0,1]]
-b = 89
 
-showResults((K,I))
+def start(K=None,I=None,b=None,show=False):
+    #create the matrix
+    if not K:
+        K = [[33,17,60],[50,28,72],[26,86,41]]
+    if not I:
+        I = [[1,0,0],[0,1,0],[0,0,1]]
+    if not b:
+        b = 89
 
-for row_counter in range(len(K)):
-    #row_counter = 0
-    it = step1(K,I, b, row_counter)
-    X = step2(it,K,I,row_counter)
-    K,I = step3(K,I,X,b,row_counter)
+    if show:
+        showResults((K,I))
 
-showResults((K,I))
+    for row_counter in range(len(K)):
+        #row_counter = 0
+        it = step1(K,I, b, row_counter)
+        X = step2(it,K,I,row_counter)
+        K,I = step3(K,I,X,b,row_counter)
+
+    if show:
+        showResults((K,I))
+
+def make_I(length):
+    I = []
+    counter = 0
+    for i in range(length):
+        temp = []
+        for j in range(length):
+            if j == counter:
+                temp.append(1)
+            else:
+                temp.append(0)
+        I.append(temp)
+        counter +=1
+    return I
+
+if __name__ == "__main__":
+    n = 10
+    K = np.random.randint(low=0, high=100, size=(n, n)).tolist()
+    I = make_I(n)
+
+    t1_start = perf_counter() 
+    start(K,I,89)
+    t1_stop = perf_counter()
+
+    """ t1_start = perf_counter() 
+    start()
+    t1_stop = perf_counter()
+
+    print(t1_stop-t1_start) """
