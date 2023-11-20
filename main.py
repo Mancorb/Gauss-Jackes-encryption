@@ -41,18 +41,20 @@ def step2(iterations,k,I,r_counter):
     #r=b+(p(q))*-1
     equivalence = {r:[b,p]}
 
-    equations = deepcopy(iterations [1:-1])
-    #-----------------------------------
-    #Part two
-    for iteration in equations:
-        e,r = EquationIteration(iteration,equivalence)
-        
-        #Store new equation to the dictionary
-        equivalence[r] = dissolve(e)
-
-    #----------------------------------
-    #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
-    e,r = EquationIteration(equations[-1],equivalence)
+    if len(iterations) > 1:
+    
+        equations = deepcopy(iterations [1:-1])
+        #-----------------------------------
+        #Part two
+        for iteration in equations:
+            e,r = EquationIteration(iteration,equivalence)
+            
+            #Store new equation to the dictionary
+            equivalence[r] = dissolve(e)
+    
+        #----------------------------------
+        #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
+        e,r = EquationIteration(equations[-1],equivalence)
 
     #find row pivot and return the multiplier
     for i in e:
@@ -120,16 +122,16 @@ def make_I(length):
     return I
 
 if __name__ == "__main__":
-    n = 10
+    """ n = 10
     K = np.random.randint(low=0, high=100, size=(n, n)).tolist()
     I = make_I(n)
 
     t1_start = perf_counter() 
     start(K,I,89)
+    t1_stop = perf_counter() """
+
+    t1_start = perf_counter() 
+    start(show=True)
     t1_stop = perf_counter()
 
-    """ t1_start = perf_counter() 
-    start()
-    t1_stop = perf_counter()
-
-    print(t1_stop-t1_start) """
+    print(t1_stop-t1_start)
