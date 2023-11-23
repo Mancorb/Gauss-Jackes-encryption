@@ -116,7 +116,7 @@ def EquationIteration(iteration,equivalence):
         if i == len(e)-1:
             break
         elif e[i] == e[-2]:
-            #avoid the cycle if its the last two elements
+            #avoid the cycle if it's the last two elements
             a = e[-1]
             if e[i].value==a.value:
                 e[i] =joinMultiplier(e[i],a)                    

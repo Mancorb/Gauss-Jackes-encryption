@@ -32,6 +32,17 @@ def step1(kn,I, b, r_counter):
 
 #[p=33, q=2, r=23, b=89]
 def step2(iterations,k,I,r_counter):
+    """Retuns the multiplier to affect he original matrix
+
+    Args:
+        iterations (list): list of all the inicial equations before processing
+        k (list): original matrix
+        I (list): matrix with only 1s and 0s
+        r_counter (int): counter to see in which row the process is tacking place
+
+    Returns:
+        int: multiplier to use in step 3
+    """
     #part one
     #obtain the first equation
     p,q,r,b = iterations[0]
@@ -39,9 +50,13 @@ def step2(iterations,k,I,r_counter):
     b = Number(b)
     p = Number(p*-1,q)
     #r=b+(p(q))*-1
-    equivalence = {r:[b,p]}
+    equivalence = {r:[b,p]}#dictionary of equations to store
 
-    if len(iterations) > 1:
+    if len(iterations) == 1:
+        iteration = deepcopy(iterations[0])
+        e,r = EquationIteration(iteration,equivalence)
+
+    elif len(iterations) > 1:
     
         equations = deepcopy(iterations [1:-1])
         #-----------------------------------
@@ -53,7 +68,7 @@ def step2(iterations,k,I,r_counter):
             equivalence[r] = dissolve(e)
     
         #----------------------------------
-        #part three last equation (just replicate part twoo but without adding to the dictionary and look for X based on the pivot)
+        #part three last equation (just replicate part two but without adding to the dictionary and look for X based on the pivot)
         e,r = EquationIteration(equations[-1],equivalence)
 
     #find row pivot and return the multiplier
@@ -122,16 +137,11 @@ def make_I(length):
     return I
 
 if __name__ == "__main__":
-    """ n = 10
+    n = 8 #maximum funccionality with only 7 so far
     K = np.random.randint(low=0, high=100, size=(n, n)).tolist()
     I = make_I(n)
 
     t1_start = perf_counter() 
-    start(K,I,89)
-    t1_stop = perf_counter() """
-
-    t1_start = perf_counter() 
-    start(show=True)
+    start(K,I,b=89,show=True)
     t1_stop = perf_counter()
 
-    print(t1_stop-t1_start)
