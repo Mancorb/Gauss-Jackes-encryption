@@ -52,9 +52,8 @@ def step2(iterations,k,I,r_counter):
     #r=b+(p(q))*-1
     equivalence = {r:[b,p]}#dictionary of equations to store
 
-    if len(iterations) == 1:
-        iteration = deepcopy(iterations[0])
-        e,r = EquationIteration(iteration,equivalence)
+    if len(iterations) <3:
+        e,r = EquationIteration(iterations[-1],equivalence)
 
     elif len(iterations) > 1:
     
@@ -104,9 +103,23 @@ def step3(K,I,X,B,r_counter):
 def start(K=None,I=None,b=None,show=False):
     #create the matrix
     if not K:
-        K = [[33,17,60],[50,28,72],[26,86,41]]
+        K = [[39, 76, 91, 99, 11, 77, 13, 73]                
+            ,[46, 90, 0, 73, 13, 86, 89, 59]         
+            ,[77, 45, 98, 98, 89, 64, 27, 75]                
+            ,[47, 39, 66, 79, 23, 40, 49, 55]                
+            ,[23, 93, 49, 98, 42, 99, 37, 98]                
+            ,[86, 79, 59, 93, 12, 0, 52, 61]         
+            ,[92, 11, 88, 79, 31, 31, 55, 17]                
+            ,[30, 83, 40, 79, 39, 14, 35, 77]]
     if not I:
-        I = [[1,0,0],[0,1,0],[0,0,1]]
+        I = [[1, 0, 0, 0, 0, 0, 0, 0]
+            ,[0, 1, 0, 0, 0, 0, 0, 0]
+            ,[0, 0, 1, 0, 0, 0, 0, 0]
+            ,[0, 0, 0, 1, 0, 0, 0, 0]
+            ,[0, 0, 0, 0, 1, 0, 0, 0]
+            ,[0, 0, 0, 0, 0, 1, 0, 0]
+            ,[0, 0, 0, 0, 0, 0, 1, 0]
+            ,[0, 0, 0, 0, 0, 0, 0, 1]]
     if not b:
         b = 89
 
@@ -115,9 +128,9 @@ def start(K=None,I=None,b=None,show=False):
 
     for row_counter in range(len(K)):
         #row_counter = 0
-        it = step1(K,I, b, row_counter)
-        X = step2(it,K,I,row_counter)
-        K,I = step3(K,I,X,b,row_counter)
+        it = step1(K,I, b, row_counter) #Iterations
+        X = step2(it,K,I,row_counter) # X factor to convert in step 3
+        K,I = step3(K,I,X,b,row_counter) # Replace old matrix with new values
 
     if show:
         showResults((K,I))
@@ -137,11 +150,62 @@ def make_I(length):
     return I
 
 if __name__ == "__main__":
-    n = 8 #maximum funccionality with only 7 so far
+    """ n = 4 #maximum funccionality with only 7 so far
     K = np.random.randint(low=0, high=100, size=(n, n)).tolist()
-    I = make_I(n)
+    I = make_I(n) """
 
-    t1_start = perf_counter() 
+    Original_Matrix = [[33,17,60],
+                        [50,28,72],
+                        [26,86,41]]
+    
+    #(only two equations at row 4)
+    Tester_Matrix= [[39, 76, 91, 99, 11, 77, 13, 73]                
+                    ,[46, 90, 0, 73, 13, 86, 89, 59]         
+                    ,[77, 45, 98, 98, 89, 64, 27, 75]                
+                    ,[47, 39, 66, 79, 23, 40, 49, 55]                
+                    ,[23, 93, 49, 98, 42, 99, 37, 98]                
+                    ,[86, 79, 59, 93, 12, 0, 52, 61]         
+                    ,[92, 11, 88, 79, 31, 31, 55, 17]                
+                    ,[30, 83, 40, 79, 39, 14, 35, 77]]
+
+    K = Tester_Matrix
+    I = make_I(len(K))
     start(K,I,b=89,show=True)
-    t1_stop = perf_counter()
 
+
+"""
+Original_Matrix = [33,17,60],
+                    [50,28,72],
+                    [26,86,41]
+
+[1,0,0],[0,1,0],[0,0,1]
+
+Tester Matrix: (only two equations at one point)
+[39, 76, 91, 99, 11, 77, 13, 73]                
+[46, 90, 0, 73, 13, 86, 89, 59]         
+[77, 45, 98, 98, 89, 64, 27, 75]                
+[47, 39, 66, 79, 23, 40, 49, 55]                
+[23, 93, 49, 98, 42, 99, 37, 98]                
+[86, 79, 59, 93, 12, 0, 52, 61]         
+[92, 11, 88, 79, 31, 31, 55, 17]                
+[30, 83, 40, 79, 39, 14, 35, 77]   
+
+[1, 0, 0, 0, 0, 0, 0, 0]
+[0, 1, 0, 0, 0, 0, 0, 0]
+[0, 0, 1, 0, 0, 0, 0, 0]
+[0, 0, 0, 1, 0, 0, 0, 0]
+[0, 0, 0, 0, 1, 0, 0, 0]
+[0, 0, 0, 0, 0, 1, 0, 0]
+[0, 0, 0, 0, 0, 0, 1, 0]
+[0, 0, 0, 0, 0, 0, 0, 1]
+
+Tester Matrix: (at some point it divides 0 to obtain q)
+[74, 81, 63, 37, 4, 21, 0, 95]    
+[89, 92, 0, 39, 68, 44, 26, 74]   
+[56, 62, 30, 62, 56, 1, 37, 85]   
+[71, 57, 37, 93, 38, 62, 23, 11]          
+[82, 41, 21, 58, 22, 29, 23, 47]          
+[35, 89, 11, 6, 33, 68, 48, 8]    
+[62, 26, 83, 84, 61, 18, 57, 44]          
+[7, 76, 71, 23, 9, 84, 48, 68]
+"""

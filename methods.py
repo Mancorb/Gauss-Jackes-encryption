@@ -47,7 +47,11 @@ def getP(kn,I,r_counter):
     return p
 
 def getQ(b,p):
-    q = int(b/p)
+    try:
+        q = int(b/p)
+    except ZeroDivisionError:
+        print("[-] Processs can't be completed attempted to divide by 0")
+        exit()
     return q
 
 def getR(b,q,p):
@@ -174,5 +178,5 @@ def P3_second_process(array,counter,main_row,B,original= None):
 def showResults(arrays):
     print("K:\t\tI:")
     for i in range(len(arrays[0][0])):
-        print(f"{arrays[0][i]}\t{arrays[1][i]}")
+        print(f"{arrays[0][i]}\t\t{arrays[1][i]}")
     print("\n--------------------------------\n")
