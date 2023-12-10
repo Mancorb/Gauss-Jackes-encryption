@@ -137,14 +137,6 @@ def EquationIteration(iteration,equivalence):
             txt += f"({i.value}*{i.multiplier}) + "
         print(f"Error with ecuation:\n{r}!={txt}")
         return False
-    #prove the equation is correct
-    if not proveR(r,e):
-        txt =""
-        for i in e:
-            txt += f"({i.value}*{i.multiplier}) + "
-        print(f"Error with ecuation:\n{r}!={txt}")
-
-        return False
 
     return e,r
 
