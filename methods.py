@@ -180,3 +180,67 @@ def showResults(arrays):
     for i in range(len(arrays[0][0])):
         print(f"{arrays[0][i]}\t\t{arrays[1][i]}")
     print("\n--------------------------------\n")
+
+def initial_Scan(K,I, check=False):
+    """This method is supposed to scan the matrix and see if the pivot 
+    is 0, if it is 0 then,
+    if there is a row below, then it will switch the values of the current row 
+    with the row below it
+
+    If there is no row below, return an error saying that the process can't be completed due to the nature 
+    of the matrix it self.
+
+    Inputs: 
+
+    K (List): original K matrix
+    I (List): Image matrix of K
+    check(boolean) just return if it is possible to switchor not
+
+    Process:
+    1.-Verify if the pivot is at the last row, if so activate a flag
+    2.-Look for the corresponding pivot values based on a counter 
+    (eg. if the counter == 3 then look in row three for the value in the third column)
+    3-a.-if the value is 0 and != flag then switch values with next row (for both K and I matrices)
+    3-b.- if the value is 0 and flag = True then return False
+    """
+    counter = 0
+    length = len(K)
+    for i in range(K):
+        if i == length-1: #check if it is last row
+            flag = True
+        else:
+            flag = False
+        
+        for j in range(K):#check if pivot is not equal to 0 in each row
+            value = K[i][j]
+            if value == 0 and counter == j:# if so return False
+                if flag:
+                    return False
+                
+                if not check:
+                    K,I = switch(K,I,counter)# else switch
+            counter+=1
+    
+    if check:
+        return True
+    
+    return (K,I)
+    
+def switch(K,I,counter):
+    """Switch the values of two rows for two different arrays"""
+    #Save the rows into variable for easier access
+    arrays = [[K [counter], K [counter+1]],[I [counter], I [counter+1]]]
+    
+    for group in arrays:
+        #a = [K[counter], k[counter+1]]
+
+        for i in range(len(group[0])): # switch process
+            temp = group[0][i]
+            group[0][i] = group[1][i]
+            group[1][i] = temp
+    
+    #save values back into the original arrays
+    K[counter], K[counter + 1] = arrays[0]
+    I[counter], I[counter + 1] = arrays[1]
+
+    return K,I

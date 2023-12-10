@@ -127,7 +127,13 @@ def start(K=None,I=None,b=None,show=False):
         showResults((K,I))
 
     for row_counter in range(len(K)):
-        #row_counter = 0
+        #check pivot value
+        if not initial_Scan(K,I,check=True):
+            print("[-]Error the this process can't be completed due to the nature of the matrix")
+            break
+        
+        K,I =initial_Scan(K,I)
+
         it = step1(K,I, b, row_counter) #Iterations
         X = step2(it,K,I,row_counter) # X factor to convert in step 3
         K,I = step3(K,I,X,b,row_counter) # Replace old matrix with new values
@@ -159,21 +165,21 @@ if __name__ == "__main__":
                         [26,86,41]]
     
     #(only two equations at row 4)
-    Tester_Matrix= [[39, 76, 91, 99, 11, 77, 13, 73]                
-                    ,[46, 90, 0, 73, 13, 86, 89, 59]         
-                    ,[77, 45, 98, 98, 89, 64, 27, 75]                
-                    ,[47, 39, 66, 79, 23, 40, 49, 55]                
-                    ,[23, 93, 49, 98, 42, 99, 37, 98]                
-                    ,[86, 79, 59, 93, 12, 0, 52, 61]         
-                    ,[92, 11, 88, 79, 31, 31, 55, 17]                
-                    ,[30, 83, 40, 79, 39, 14, 35, 77]]
+    Tester_Matrix= [[74, 81, 63, 37, 4, 21, 0, 95]    
+                    ,[89, 92, 0, 39, 68, 44, 26, 74]   
+                    ,[56, 62, 30, 62, 56, 1, 37, 85]   
+                    ,[71, 57, 37, 93, 38, 62, 23, 11]          
+                    ,[82, 41, 21, 58, 22, 29, 23, 47]          
+                    ,[35, 89, 11, 6, 33, 68, 48, 8]    
+                    ,[62, 26, 83, 84, 61, 18, 57, 44]          
+                    ,[7, 76, 71, 23, 9, 84, 48, 68]]
 
-    K = Tester_Matrix
+    K = Original_Matrix
     I = make_I(len(K))
     start(K,I,b=89,show=True)
 
 
-"""
+""" 
 Original_Matrix = [33,17,60],
                     [50,28,72],
                     [26,86,41]
