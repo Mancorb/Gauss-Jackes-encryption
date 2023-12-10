@@ -40,10 +40,7 @@ def proveR(r,e):
     return False
 
 def getP(kn,I,r_counter):
-    for  i in range(len(kn)):
-        if I[r_counter][i] == 1:
-            p = kn[r_counter][i]
-            break
+    p =kn[r_counter][r_counter]
     return p
 
 def getQ(b,p):
@@ -205,13 +202,13 @@ def initial_Scan(K,I, check=False):
     """
     counter = 0
     length = len(K)
-    for i in range(K):
+    for i in range(len(K)):
         if i == length-1: #check if it is last row
             flag = True
         else:
             flag = False
         
-        for j in range(K):#check if pivot is not equal to 0 in each row
+        for j in range(len(K)):#check if pivot is not equal to 0 in each row
             value = K[i][j]
             if value == 0 and counter == j:# if so return False
                 if flag:
@@ -219,7 +216,8 @@ def initial_Scan(K,I, check=False):
                 
                 if not check:
                     K,I = switch(K,I,counter)# else switch
-            counter+=1
+                    print(f"[+]Switched: {value} with counter: {counter}")
+        counter+=1
     
     if check:
         return True

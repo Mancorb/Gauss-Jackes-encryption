@@ -134,6 +134,10 @@ def start(K=None,I=None,b=None,show=False):
         
         K,I =initial_Scan(K,I)
 
+        #Testing process
+        if row_counter == len(K)-1:
+            pass
+
         it = step1(K,I, b, row_counter) #Iterations
         X = step2(it,K,I,row_counter) # X factor to convert in step 3
         K,I = step3(K,I,X,b,row_counter) # Replace old matrix with new values
@@ -174,7 +178,7 @@ if __name__ == "__main__":
                     ,[62, 26, 83, 84, 61, 18, 57, 44]          
                     ,[7, 76, 71, 23, 9, 84, 48, 68]]
 
-    K = Original_Matrix
+    K = Tester_Matrix
     I = make_I(len(K))
     start(K,I,b=89,show=True)
 
