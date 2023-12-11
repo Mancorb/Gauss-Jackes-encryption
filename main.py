@@ -133,7 +133,7 @@ def start(K=None,I=None,b=None,show=False):
             break
 
         #Testing:
-        if row_counter == 4:
+        if row_counter == 5:
             pass
         
         K,I =initial_Scan(K,I)
